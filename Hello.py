@@ -14,6 +14,8 @@
 
 import streamlit as st
 from streamlit.logger import get_logger
+import pandas as pd
+# from st_btn_select import st_btn_select
 
 LOGGER = get_logger(__name__)
 
@@ -62,12 +64,10 @@ def run():
       c.subheader("Enunciado")
       c.write(f"{enunciado}")
 
-      selection = st_btn_select((f"A) {item_a}", f"B) {item_b}", f"C) {item_c}", f"D) {item_d}", f"E) {item_e}"))
-
       
-      alternativa_escolhida = st.radio("Escolha a alternativa correta: ", itens_com_label, index=None)
+      alternativa_escolhida = st.radio("Escolha a alternativa correta: ", itens_com_label, index=None, key=f"Alternativas_{questao['id']}")
 
-      submit_ans = st.button("Checar resposta")
+      submit_ans = st.button("Checar resposta", key=f"BotaoEnvioAlternativas_{questao['id']}a")
 
       
           
