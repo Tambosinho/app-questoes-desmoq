@@ -1,7 +1,7 @@
-# Welcome to streamlit
+# V1 Projeto Banco de Questões de Olimpíadas utilizando Streamlit
 
-This is the app you get when you run `streamlit hello`, extracted as its own app.
+Não pretende-se ser a tecnologia utilizada, desejamos apenas entender a estruturação do projeto, das features fundamentais e da usabilidade da ferramenta. 
 
-Edit [Hello.py](./Hello.py) to customize this app to your heart's desire. ❤️
+Autores: João Pedro Tambosi e Gustavo Grancieiro. 
 
-Check it out on [Streamlit Community Cloud](https://st-hello-app.streamlit.app/)
+Em desenvolvimento por Desmoq Educação® (desmoq.com).

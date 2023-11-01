@@ -19,32 +19,108 @@ LOGGER = get_logger(__name__)
 
 
 def run():
-    st.set_page_config(
-        page_title="Hello",
-        page_icon="👋",
-    )
 
-    st.write("# Welcome to Streamlit! 👋")
+  st.set_page_config(
+      page_title="Questões Olimpíadas",
+      page_icon=":fire:",
+  )
 
-    st.sidebar.success("Select a demo above.")
+  ### DADOS E DATABASE
 
-    st.markdown(
-        """
-        Streamlit is an open-source app framework built specifically for
-        Machine Learning and Data Science projects.
-        **👈 Select a demo from the sidebar** to see some examples
-        of what Streamlit can do!
-        ### Want to learn more?
-        - Check out [streamlit.io](https://streamlit.io)
-        - Jump into our [documentation](https://docs.streamlit.io)
-        - Ask a question in our [community
-          forums](https://discuss.streamlit.io)
-        ### See more complex demos
-        - Use a neural net to [analyze the Udacity Self-driving Car Image
-          Dataset](https://github.com/streamlit/demo-self-driving)
-        - Explore a [New York City rideshare dataset](https://github.com/streamlit/demo-uber-nyc-pickups)
-    """
-    )
+  # Lê CSV Teste. Futurely replace with DB Connection
+  df = pd.read_csv("questoes_teste.csv", sep=",")
+
+  #
+  lista_olimpiadas = list(df["olimpiada"].unique())
+  lista_nivel = list(df["nivel"].unique())
+  lista_fases = list(df["nivel"].unique())
+  lista_assuntos = list(df["assunto"].unique())
+
+
+  ### FUNÇÕES 
+
+  # Function to display box with question information. (TESTANDO BOTÕES AINDA) 
+  def question_box (questao) :
+
+      # Seção Enunciado
+
+      enunciado = questao["enunciado"]
+      solucao = questao["solucao"]
+      resposta_correta = questao["resposta_correta"]
+
+      item_a=questao["item_a"]
+      item_b=questao["item_b"]
+      item_c=questao["item_c"]
+      item_d=questao["item_d"]
+      item_e=questao["item_e"]
+
+      itens = [item_a, item_b, item_c, item_d, item_e]
+      itens_com_label = [f"A) {item_a}", f"B) {item_b}", f"C) {item_c}", f"D) {item_d}", f"E) {item_e}"]
+
+      
+      c = st.container()
+      c.subheader("Enunciado")
+      c.write(f"{enunciado}")
+
+      selection = st_btn_select((f"A) {item_a}", f"B) {item_b}", f"C) {item_c}", f"D) {item_d}", f"E) {item_e}"))
+
+      
+      alternativa_escolhida = st.radio("Escolha a alternativa correta: ", itens_com_label, index=None)
+
+      submit_ans = st.button("Checar resposta")
+
+      
+          
+      if submit_ans :
+          print(alternativa_escolhida)
+
+
+
+      c.write(f"A) {item_a}")
+      c.write(f"B) {item_b}")
+      c.write(f"C) {item_c}")
+      c.write(f"D) {item_d}")
+      c.write(f"E) {item_e}")
+
+
+      # Seção Gabarito
+
+      with st.expander(":eye:   VER SOLUÇÃO"):
+          st.subheader("Solução:")
+          st.write(f"Resposta: {resposta_correta.upper()}")
+          st.write(f"{solucao}")
+
+
+  ### SIDEBAR
+
+  ### Cria Sidebar com formulário para escolher filtros das questões. Possivelmente causando erro. ###
+  with st.sidebar.form(key="filtro"):
+      olimpiada = st.selectbox("Olimpíada", lista_olimpiadas)
+      nivel = st.selectbox("Nível", lista_nivel)
+
+      fase = st.selectbox("Fase", lista_fases)
+      assunto = st.selectbox("Assunto", lista_assuntos)
+
+      submit = st.form_submit_button("Filtrar questões")
+
+
+
+  if submit :
+      questoes_filtradas = df[
+          (df["olimpiada"]==olimpiada)
+          & (df["assunto"]==assunto)
+          & (df["nivel"]==nivel)
+          & (df["fase"]==fase)
+      ]
+
+      numero_resultados = len(questoes_filtradas)
+
+      st.header(f"Encontramos {numero_resultados} questões!")
+
+      for index, questao in questoes_filtradas.iterrows() :
+          question_box(questao)
+          st.divider()
+
 
 
 if __name__ == "__main__":
